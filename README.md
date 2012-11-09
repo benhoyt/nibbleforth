@@ -1,5 +1,5 @@
-Nibbleforth - A very compact stack machine (Forth) bytecode
------------------------------------------------------------
+NibbleForth - A very compact stack machine (Forth) bytecode
+===========================================================
 
 This is just an idea at this point. I don't have time to work on it further at
 this point. Posting my notes on GitHub for the record.
@@ -11,11 +11,12 @@ wasn't producing very tight code.
 
 So I started thinking about the smallest possible instruction set. I'm pretty
 familiar with
-[Forth](http://en.wikipedia.org/wiki/Forth_(programming_language)) and stack-
-based virtual machines, so that's where my thoughts went. My basic ideas were:
+[Forth](http://en.wikipedia.org/wiki/Forth_%28programming_language%29) and
+stack-based virtual machines, so that's where my thoughts went. My basic
+ideas were:
 
-Use **variable-length instruction opcodes**, and assign the most frequently-
-used opcodes the lowest numbers so they can be encoded in the smallest
+Use **variable-length instruction opcodes**, and assign the most frequently-used
+opcodes the lowest numbers so they can be encoded in the smallest
 instructions. Kind of like
 [UTF-8](http://en.wikipedia.org/wiki/UTF-8#Description), or the [base 128
 varints](https://developers.google.com/protocol-buffers/docs/encoding#varints)
@@ -32,9 +33,9 @@ majority, meaning that encoding the most common opcodes in 4 bits and the
 slightly less common ones in 8 bits would be a huge gain.
 
 And my hunch was correct -- I analyzed a bunch of Forth programs that come
-with [Gforth](http://bernd-paysan.de/gforth.html), and `exit` is by far the
-most common in most programs, with `jz` and `jmp` often close behind, and then
-the others usually varied from program to program.
+with [Gforth](http://bernd-paysan.de/gforth.html) using `nibbleforth.py`, and
+`exit` is by far the most common in most programs, with `jz` and `jmp` often
+close behind, and then the others usually varied from program to program.
 
 Perhaps even more importantly, is to use **Forth-like [token
 threading](http://en.wikipedia.org/wiki/Threaded_code#Token_threading)** on top
@@ -77,8 +78,14 @@ functions, but it can't really do any further optimization.
 
 In any case, it would be a fun project to work on at some stage. :-)
 
-== References ==
+References
+----------
 
-* [Improving Code Density Using Compression Techniques]() by Lefurgy, Bird, Chen, Mudge -- this one has two similarites to my idea: compressing into nibbles, and rolling common sequences of instructions into a function call
-* [Generation of Fast Interpreters for Huffman Compressed Bytecode](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.156.2546&rep=rep1&type=pdf) by Latendresse and Feeley
-* [Anton Ertl's papers on Forth interpreters](http://www.complang.tuwien.ac.at/projects/interpreters.html) -- I haven't read this stuff, but some of it looks relevant and interesting
+* [Improving Code Density Using Compression Techniques](http://researcher.watson.ibm.com/researcher/files/us-lefurgy/micro30.net.compress.pdf)
+by Lefurgy, Bird, Chen, Mudge -- this one has two similarites to my idea:
+compressing into nibbles, and rolling common sequences of instructions into a
+function call
+* [Generation of Fast Interpreters for Huffman Compressed Bytecode](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.156.2546&rep=rep1&type=pdf)
+by Latendresse and Feeley
+* [Anton Ertl's papers on Forth interpreters](http://www.complang.tuwien.ac.at/projects/interpreters.html)
+-- I haven't read this stuff, but some of it looks relevant and interesting
